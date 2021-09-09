@@ -36,7 +36,7 @@ public class NBody{
 		StdDraw.enableDoubleBuffering();
 		double t = 0;
 		
-		while(t < T){
+		while(t <= T){
 			double[] xForces = new double[n];
 			double[] yForces = new double[n];
 			for(int i = 0; i<n; i+=1){
