@@ -82,6 +82,14 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
+        if ( A == null && B == null){
+            return null;
+        }else if ( B == null){
+            return A;
+        }
+        else if (A == null){
+            return B;
+        }
         IntList p;
         p = A;
         while(p.rest != null){
@@ -97,26 +105,57 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        IntList res = new IntList(A.first, null);
-        IntList p, q;
-        p = A.rest;
-        q = res;
-        while( p.rest != null){
+        if ( A == null && B == null){
+            return null;
+        }else if ( B == null){
+            IntList res = new IntList(A.first, null);
+            IntList p, q;
+            p = A.rest;
+            q = res;
+            while( p.rest != null){
+                q.rest = new IntList(p.first, null);
+                q = q.rest;
+                p = p.rest;
+            }
+            q.rest = new IntList(p.first, null);
+            return res;
+        }
+        else if (A == null){
+            IntList res = new IntList(B.first, null);
+            IntList p, q;
+            p = B.rest;
+            q = res;
+            while( p.rest != null){
+                q.rest = new IntList(p.first, null);
+                q = q.rest;
+                p = p.rest;
+            }
+            q.rest = new IntList(p.first, null);
+            return res;
+        }
+        else{
+            IntList res = new IntList(A.first, null);
+            IntList p, q;
+            p = A.rest;
+            q = res;
+            while( p.rest != null){
+                q.rest = new IntList(p.first, null);
+                q = q.rest;
+                p = p.rest;
+            }
             q.rest = new IntList(p.first, null);
             q = q.rest;
-            p = p.rest;
-        }
-        q.rest = new IntList(p.first, null);
-        q = q.rest;
-        p = B;
+            p = B;
 
-        while( p.rest != null){
-            q.rest = new IntList(p.first, p.rest);
-            q = q.rest;
-            p = p.rest;
+            while( p.rest != null){
+                q.rest = new IntList(p.first, p.rest);
+                q = q.rest;
+                p = p.rest;
+            }
+            q.rest = new IntList(p.first, null);
+            return res;
         }
-        q.rest = new IntList(p.first, null);
-        return res;
+
     }
 
 
