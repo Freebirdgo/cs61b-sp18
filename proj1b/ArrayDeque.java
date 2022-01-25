@@ -2,28 +2,30 @@ public class ArrayDeque<T> implements Deque<T> {
 
     /** Invariants
      * size: the number of items in the deque.
-     * ratio: items used are proportional to its size, if less than the value, should resize the deque.
+     * ratio: items used are proportional to its size,
+     * if less than the value, should resize the deque.
      */
     private T[] items;
     private int size;
     private int front;
     private int rear;
+    private int capacity = 8;
 
     private static int REFACTOR = 2;
 
     /** Creates an empty array deque. */
-    public ArrayDeque(){
+    public ArrayDeque() {
         size = 0;
-        items = (T[]) new Object[8];
+        items = (T[]) new Object[capacity];
         front = -1;
         rear = -1;
     }
 
     /** Adds an item of type T to the front of the deque. */
     @Override
-    public void addFirst(T x){
+    public void addFirst(T x) {
         if (isFull()) {
-            resize(items.length * REFACTOR);
+            resize(capacity * REFACTOR);
         }
         front = minusOne(front);
         items[front] = x;
@@ -32,9 +34,9 @@ public class ArrayDeque<T> implements Deque<T> {
 
     /** Adds an item of type T to the back of the deque. */
     @Override
-    public void addLast(T x){
+    public void addLast(T x) {
         if (isFull()) {
-            resize(items.length * REFACTOR);
+            resize(capacity * REFACTOR);
         }
         rear = plusOne(rear);
         items[rear] = x;
@@ -44,39 +46,46 @@ public class ArrayDeque<T> implements Deque<T> {
 
     /** Removes and returns the item of the font of the deque. */
     @Override
-    public T removeFirst(){
-        T frontValue = items[front];
-        items[front] = null;
-        size--;
-        front = plusOne(front);
-        if (isSparse()) {
-            resize((int) (items.length * 0.5));
+    public T removeFirst() {
+        if (!isEmpty()) {
+            T frontValue = items[front];
+            size--;
+            front = plusOne(front);
+            if (isSparse()) {
+                resize((capacity / 2));
+            }
+            return frontValue;
         }
-        return frontValue;
+        return null;
     }
 
     /** Removes and returns the item of the back of the deque. */
     @Override
     public T removeLast() {
-        T rearValue = items[rear];
-        items[rear] = null;
-        size--;
-        rear = minusOne(rear);
-        if (isSparse()) {
-            resize((int) (items.length * 0.5));
+        if (!isEmpty()) {
+            T rearValue = items[rear];
+            size--;
+            rear = minusOne(rear);
+            if (isSparse()) {
+                resize((capacity / 2));
+            }
+            return rearValue;
         }
-        return rearValue;
+        return null;
     }
 
     /** Gets the item at position index in the deque. */
     @Override
-    public T get(int index){
-        return items[index];
+    public T get(int index) {
+        if (index >= size || index < 0) {
+            return null;
+        }
+        return items[(front + index) % capacity];
     }
 
     /** Returns the number of items in the deque. */
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -99,7 +108,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     /** Returns true if deque is full, false otherwise. */
     private boolean isFull() {
-        return size == items.length;
+        return size == capacity;
     }
 
     /** Returns true if the usage ratio of the deque < 0.25, false otherwise. */
@@ -107,13 +116,12 @@ public class ArrayDeque<T> implements Deque<T> {
         if (items.length < 16) {
             return false;
         }
-        double ratio = size / (double) items.length;
-        return ratio < 0.25;
+        return size < (capacity / 4);
     }
 
     /** Calculate the new front position of the queue. */
     private int minusOne(int position) {
-        if ( position == -1) {
+        if (position == -1) {
             rear = 0;
             position = 0;
         } else {
@@ -123,7 +131,7 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     private int plusOne(int position) {
-        if ( position == -1) {
+        if (position == -1) {
             front = 0;
             position = 0;
         } else {
@@ -134,18 +142,19 @@ public class ArrayDeque<T> implements Deque<T> {
     /** Resizes the backing array so that it is of
      * the given capacity.
      */
-    private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
+    private void resize(int capacityNew) {
+        T[] a = (T[]) new Object[capacityNew];
         if (front > rear) {
             System.arraycopy(items, 0, a, 0, rear + 1);
-            int length = items.length - front;
-            System.arraycopy(items, front, a, capacity - length, length);
-            front = capacity - length;
+            int length = capacity - front;
+            System.arraycopy(items, front, a, capacityNew - length, length);
+            front = capacityNew - length;
         } else {
             System.arraycopy(items, front, a, 0, size);
             front = 0;
             rear = size - 1;
         }
+        capacity = capacityNew;
         items = a;
     }
 
