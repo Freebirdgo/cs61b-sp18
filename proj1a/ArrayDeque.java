@@ -2,7 +2,8 @@ public class ArrayDeque<T> {
 
     /** Invariants
      * size: the number of items in the deque.
-     * ratio: items used are proportional to its size, if less than the value, should resize the deque.
+     * ratio: items used are proportional to its size,
+     * if less than the value, should resize the deque.
      */
     private T[] items;
     private int size;
@@ -12,7 +13,7 @@ public class ArrayDeque<T> {
     private static int REFACTOR = 2;
 
     /** Creates an empty array deque. */
-    public ArrayDeque(){
+    public ArrayDeque() {
         size = 0;
         items = (T[]) new Object[8];
         front = -1;
@@ -20,7 +21,7 @@ public class ArrayDeque<T> {
     }
 
     /** Adds an item of type T to the front of the deque. */
-    public void addFirst(T x){
+    public void addFirst(T x) {
         if (isFull()) {
             resize(items.length * REFACTOR);
         }
@@ -48,7 +49,7 @@ public class ArrayDeque<T> {
     }
 
     /** Adds an item of type T to the back of the deque. */
-    public void addLast(T x){
+    public void addLast(T x) {
         if (isFull()) {
             resize(items.length * REFACTOR);
         }
@@ -59,13 +60,15 @@ public class ArrayDeque<T> {
     }
 
     /** Removes and returns the item of the font of the deque. */
-    public T removeFirst(){
+    public T removeFirst() {
         T frontValue = items[front];
-        items[front] = null;
-        size--;
-        front = plusOne(front);
-        if (isSparse()) {
-            resize((int) (items.length * 0.5));
+        if (!isEmpty()) {
+            items[front] = null;
+            size--;
+            front = plusOne(front);
+            if (isSparse()) {
+                resize((int) (items.length * 0.5));
+            }
         }
         return frontValue;
     }
@@ -73,22 +76,29 @@ public class ArrayDeque<T> {
     /** Removes and returns the item of the back of the deque. */
     public T removeLast() {
         T rearValue = items[rear];
-        items[rear] = null;
-        size--;
-        rear = minusOne(rear);
-        if (isSparse()) {
-            resize((int) (items.length * 0.5));
+        if (!isEmpty()) {
+            items[rear] = null;
+            size--;
+            rear = minusOne(rear);
+            if (isSparse()) {
+                resize((int) (items.length * 0.5));
+            }
         }
         return rearValue;
     }
 
     /** Gets the item at position index in the deque. */
-    public T get(int index){
-        return items[index];
+    public T get(int index) {
+        int counter = front;
+        while (index > 0) {
+            counter = plusOne(counter);
+            index--;
+        }
+        return items[counter];
     }
 
     /** Returns the number of items in the deque. */
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -123,7 +133,7 @@ public class ArrayDeque<T> {
 
     /** Calculate the new front position of the queue. */
     private int minusOne(int position) {
-        if ( position == -1) {
+        if (position == -1) {
             rear = 0;
             position = 0;
         } else {
@@ -133,7 +143,7 @@ public class ArrayDeque<T> {
     }
 
     private int plusOne(int position) {
-        if ( position == -1) {
+        if (position == -1) {
             front = 0;
             position = 0;
         } else {

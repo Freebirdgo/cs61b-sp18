@@ -91,7 +91,8 @@ public class ArrayDequeTest {
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<>();
 
-        lld1.addFirst(120);
+
+       /* lld1.addFirst(120);
 
         for (int i = 0; i < 100; i++) {
             lld1.addFirst(i);
@@ -99,7 +100,7 @@ public class ArrayDequeTest {
         for (int i = 0; i < 90; i++) {
             lld1.removeLast();
         }
-        System.out.println(lld1.size());
+        System.out.println(lld1.size());*/
        // int[] expected = new int[]{20, , , , , , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     }
