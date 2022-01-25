@@ -9,13 +9,14 @@ public class ArrayDeque<T> {
     private int size;
     private int front;
     private int rear;
+    private int capacity = 8;
 
     private static int REFACTOR = 2;
 
     /** Creates an empty array deque. */
     public ArrayDeque() {
         size = 0;
-        items = (T[]) new Object[8];
+        items = (T[]) new Object[capacity];
         front = -1;
         rear = -1;
     }
@@ -23,7 +24,7 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T x) {
         if (isFull()) {
-            resize(items.length * REFACTOR);
+            resize(capacity * REFACTOR);
         }
         front = minusOne(front);
         items[front] = x;
@@ -34,16 +35,17 @@ public class ArrayDeque<T> {
     /** Resizes the backing array so that it is of
      * the given capacity.
      */
-    private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
+    private void resize(int capacityNew) {
+        T[] a = (T[]) new Object[capacityNew];
         if (front > rear) {
             System.arraycopy(items, 0, a, 0, rear + 1);
-            int length = items.length - front;
-            System.arraycopy(items, front, a, capacity - length, length);
-            front = capacity - length;
+            int length = this.capacity - front;
+            System.arraycopy(items, front, a, capacityNew - length, length);
+            front = capacityNew - length;
         } else {
             System.arraycopy(items, 0, a, 0, size);
-
+            front = 0;
+            rear = size - 1;
         }
         items = a;
     }
@@ -51,7 +53,7 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T x) {
         if (isFull()) {
-            resize(items.length * REFACTOR);
+            resize(capacity * REFACTOR);
         }
         rear = plusOne(rear);
         items[rear] = x;
@@ -63,11 +65,10 @@ public class ArrayDeque<T> {
     public T removeFirst() {
         if (!isEmpty()) {
             T frontValue = items[front];
-            items[front] = null;
             size--;
             front = plusOne(front);
             if (isSparse()) {
-                resize((int) (items.length * 0.5));
+                resize((int) (capacity * 0.5));
             }
             return frontValue;
         }
@@ -78,11 +79,10 @@ public class ArrayDeque<T> {
     public T removeLast() {
         if (!isEmpty()) {
             T rearValue = items[rear];
-            items[rear] = null;
             size--;
             rear = minusOne(rear);
             if (isSparse()) {
-                resize((int) (items.length * 0.5));
+                resize((int) (capacity * 0.5));
             }
             return rearValue;
         }
@@ -91,12 +91,10 @@ public class ArrayDeque<T> {
 
     /** Gets the item at position index in the deque. */
     public T get(int index) {
-        int counter = front;
-        while (index > 0) {
-            counter = counter == rear ? front: plusOne(counter);
-            index--;
+        if (index >= size || index < 0) {
+            return null;
         }
-        return items[counter];
+        return items[(front + index) % capacity];
     }
 
     /** Returns the number of items in the deque. */
@@ -121,7 +119,7 @@ public class ArrayDeque<T> {
 
     /** Returns true if deque is full, false otherwise. */
     private boolean isFull() {
-        return size == items.length;
+        return size == capacity;
     }
 
     /** Returns true if the usage ratio of the deque < 0.25, false otherwise. */
@@ -129,7 +127,7 @@ public class ArrayDeque<T> {
         if (items.length < 16) {
             return false;
         }
-        double ratio = size / (double) items.length;
+        double ratio = size / (double) capacity;
         return ratio < 0.25;
     }
 
@@ -139,7 +137,7 @@ public class ArrayDeque<T> {
             rear = 0;
             position = 0;
         } else {
-            position = position == 0 ? items.length - 1 : position - 1;
+            position = position == 0 ? capacity - 1 : position - 1;
         }
         return position;
     }
@@ -149,7 +147,7 @@ public class ArrayDeque<T> {
             front = 0;
             position = 0;
         } else {
-            position = position == items.length - 1 ? 0 : position + 1;
+            position = position == capacity - 1 ? 0 : position + 1;
         }
         return position;
     }
