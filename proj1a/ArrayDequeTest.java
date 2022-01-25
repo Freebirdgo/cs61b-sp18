@@ -104,11 +104,20 @@ public class ArrayDequeTest {
        // int[] expected = new int[]{20, , , , , , 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     }
+    public static void getTest() {
+        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        for (int i = 0; i < 20; i++) {
+            lld1.addFirst(i);
+        }
+        System.out.println(lld1.get(0));
+        System.out.println(lld1.get(21));
+        System.out.println(lld1.get(8));
+    }
 
     public static void main(String[] args) {
         System.out.println("Running tests.\n");
        /* addIsEmptySizeTest();
         addRemoveTest();*/
-        resizeTest();
+        getTest();
     }
 }

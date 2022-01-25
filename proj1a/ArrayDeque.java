@@ -69,7 +69,7 @@ public class ArrayDeque<T> {
             size--;
             front = plusOne(front);
             if (isSparse()) {
-                resize((int) (capacity * 0.5));
+                resize((capacity / 2));
             }
             return frontValue;
         }
@@ -83,7 +83,7 @@ public class ArrayDeque<T> {
             size--;
             rear = minusOne(rear);
             if (isSparse()) {
-                resize((int) (capacity * 0.5));
+                resize( (capacity / 2));
             }
             return rearValue;
         }
@@ -128,7 +128,7 @@ public class ArrayDeque<T> {
         if (items.length < 16) {
             return false;
         }
-        double ratio = size*1.0 / capacity;
+        double ratio = size * 1.0 / capacity;
         return ratio < 0.251;
     }
 
