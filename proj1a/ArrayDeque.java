@@ -61,37 +61,39 @@ public class ArrayDeque<T> {
 
     /** Removes and returns the item of the font of the deque. */
     public T removeFirst() {
-        T frontValue = items[front];
         if (!isEmpty()) {
+            T frontValue = items[front];
             items[front] = null;
             size--;
             front = plusOne(front);
             if (isSparse()) {
                 resize((int) (items.length * 0.5));
             }
+            return frontValue;
         }
-        return frontValue;
+        return null;
     }
 
     /** Removes and returns the item of the back of the deque. */
     public T removeLast() {
-        T rearValue = items[rear];
         if (!isEmpty()) {
+            T rearValue = items[rear];
             items[rear] = null;
             size--;
             rear = minusOne(rear);
             if (isSparse()) {
                 resize((int) (items.length * 0.5));
             }
+            return rearValue;
         }
-        return rearValue;
+        return null;
     }
 
     /** Gets the item at position index in the deque. */
     public T get(int index) {
         int counter = front;
         while (index > 0) {
-            counter = plusOne(counter);
+            counter = counter == rear ? front: plusOne(counter);
             index--;
         }
         return items[counter];
