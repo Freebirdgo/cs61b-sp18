@@ -109,6 +109,7 @@ public class ArrayDequeTest {
         for (int i = 0; i < 20; i++) {
             lld1.addFirst(i);
         }
+        lld1.printDeque();
         System.out.println(lld1.get(0));
         System.out.println(lld1.get(21));
         System.out.println(lld1.get(8));

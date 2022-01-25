@@ -39,11 +39,11 @@ public class ArrayDeque<T> {
         T[] a = (T[]) new Object[capacityNew];
         if (front > rear) {
             System.arraycopy(items, 0, a, 0, rear + 1);
-            int length = this.capacity - front;
+            int length = capacity - front;
             System.arraycopy(items, front, a, capacityNew - length, length);
             front = capacityNew - length;
         } else {
-            System.arraycopy(items, 0, a, 0, size);
+            System.arraycopy(items, front, a, 0, size);
             front = 0;
             rear = size - 1;
         }
@@ -83,7 +83,7 @@ public class ArrayDeque<T> {
             size--;
             rear = minusOne(rear);
             if (isSparse()) {
-                resize( (capacity / 2));
+                resize((capacity / 2));
             }
             return rearValue;
         }
@@ -128,8 +128,8 @@ public class ArrayDeque<T> {
         if (items.length < 16) {
             return false;
         }
-        double ratio = size * 1.0 / capacity;
-        return ratio < 0.251;
+   //     double ratio = size * 1.0 / capacity;
+        return size < (capacity / 4);
     }
 
     /** Calculate the new front position of the queue. */
