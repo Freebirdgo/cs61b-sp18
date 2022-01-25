@@ -47,6 +47,7 @@ public class ArrayDeque<T> {
             front = 0;
             rear = size - 1;
         }
+        capacity = capacityNew;
         items = a;
     }
 
@@ -94,7 +95,7 @@ public class ArrayDeque<T> {
         if (index >= size || index < 0) {
             return null;
         }
-        return items[(front + index) % capacity];
+        return items[(front + index ) % capacity];
     }
 
     /** Returns the number of items in the deque. */
