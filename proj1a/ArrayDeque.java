@@ -95,7 +95,7 @@ public class ArrayDeque<T> {
         if (index >= size || index < 0) {
             return null;
         }
-        return items[(front + index ) % capacity];
+        return items[(front + index) % capacity];
     }
 
     /** Returns the number of items in the deque. */
@@ -128,8 +128,8 @@ public class ArrayDeque<T> {
         if (items.length < 16) {
             return false;
         }
-        double ratio = size / (double) capacity;
-        return ratio < 0.25;
+        double ratio = size*1.0 / capacity;
+        return ratio < 0.251;
     }
 
     /** Calculate the new front position of the queue. */
