@@ -1,6 +1,6 @@
 /** A class for palindrome operations. */
 public class Palindrome {
-    public Deque<Character> wordToDeque(String word){
+    public Deque<Character> wordToDeque(String word) {
         Deque<Character> characterDeque = new ArrayDeque<Character>();
         char[] cs = word.toCharArray();
         for (char c : cs) {
@@ -28,11 +28,11 @@ public class Palindrome {
         if (q.size() == 0 || q.size() == 1) {
             return true;
         }
-       if (q.removeFirst() != q.removeLast() ) {
-           return false;
-       } else {
-           return dequePalindrome(q);
-       }
+        if (q.removeFirst() != q.removeLast()) {
+            return false;
+        } else {
+            return dequePalindrome(q);
+        }
     }
 
     private boolean dequePalindrome(Deque<Character> q, CharacterComparator cc) {

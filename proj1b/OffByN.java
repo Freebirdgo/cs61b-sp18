@@ -1,5 +1,5 @@
 /** A class for off-by-N comparators. */
-public class OffByN implements CharacterComparator{
+public class OffByN implements CharacterComparator {
     private int n;
     public OffByN(int n) {
         this.n = n;
